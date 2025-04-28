@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flood Monitoring Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef;
+      padding: 20px;
+    }
+    .sensor-box {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #ccc;
+      width: 300px;
+    }
+    .sensor-box h2 {
+      margin-top: 0;
+    }
+    #alert {
+      padding: 10px;
+      background: red;
+      color: white;
+      font-weight: bold;
+      display: none;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌊 Flood Monitoring Dashboard</h1>
+  
+  <div class="sensor-box">
+    <h2>Sensor Readings</h2>
+    <p>💧 Humidity: <span id="humi">--</span>%</p>
+    <p>🌡️ Temperature: <span id="temp">--</span>°C</p>
+    <p>🌊 Water Level: <span id="level">--</span></p>
+    <p>📈 Flood Prediction: <span id="prediction">--</span></p>
+    <p>🍃 Wind Speed: <span id="windspeed">--</span> m/s</p>
+    <div id="alert">⚠️ ALERT: Flood risk detected! ⚠️</div>
+  </div>
+
+  <!-- Firebase v8 SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <!-- Link to your external JavaScript file -->
+  <script src="main.js"></script>
+  
+</body>
+</html>
+
