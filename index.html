@@ -1,56 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flood Monitoring Dashboard</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #eef;
-      padding: 20px;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #001f3f; /* Deep blue */
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 30px;
+      position: relative;
     }
+
+    h1 {
+      font-size: 2.2em;
+      color: #ffffff;
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .background-box-wrapper {
+      display: flex;
+      align-items: stretch;
+      position: relative;
+      max-width: 500px;
+      width: 90%;
+      height: 550px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .progress-bar {
+      width: 10px;
+      background: #236292;
+      height: 0;
+      align-self: flex-end;
+      animation: progressUp 23s infinite ease-in-out;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+
+    @keyframes progressUp {
+      0% { height: 0; }
+      50% { height: 100%; }
+      100% { height: 0; }
+    }
+
+    .background-box {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 3px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     .sensor-box {
-      background: white;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px #ccc;
-      width: 300px;
+      background: rgba(255, 255, 255, 0.88);
+      padding: 20px;
+      border-radius: 12px;
+      width: 100%;
+      display: grid;
+      gap: 15px;
     }
+
     .sensor-box h2 {
-      margin-top: 0;
+      margin: 0;
+      font-size: 1.4em;
+      color: #333;
+      font-weight: 600;
+      border-bottom: 2px solid #0074D9;
+      padding-bottom: 5px;
     }
+
+    .sensor-item {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 10px 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      font-size: 1.05em;
+      color: #333;
+    }
+
+    .sensor-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    }
+
     #alert {
-      padding: 10px;
-      background: red;
+      padding: 12px;
+      background: crimson;
       color: white;
       font-weight: bold;
       display: none;
-      margin-top: 15px;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    /* Waves */
+    .waves-container {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      z-index: 1;
+    }
+
+    .wave {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: auto;
+    }
+
+    .wave path {
+      animation: waveMove 8s linear infinite alternate;
+    }
+
+    .wave1 path { fill: rgba(0, 116, 217, 0.3); }
+    .wave2 path { fill: rgba(0, 116, 217, 0.2); }
+    .wave3 path { fill: rgba(0, 116, 217, 0.1); }
+
+    @keyframes waveMove {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-25px); }
+    }
+
+    @media (max-width: 500px) {
+      h1 { font-size: 1.8em; }
+      .sensor-box { padding: 15px; }
     }
   </style>
 </head>
+
 <body>
 
   <h1>🌊 Flood Monitoring Dashboard</h1>
-  
-  <div class="sensor-box">
-    <h2>Sensor Readings</h2>
-    <p>💧 Humidity: <span id="humi">--</span>%</p>
-    <p>🌡️ Temperature: <span id="temp">--</span>°C</p>
-    <p>🌊 Water Level: <span id="level">--</span></p>
-    <p>📈 Flood Prediction: <span id="prediction">--</span></p>
-    <p>🍃 Wind Speed: <span id="windspeed">--</span> m/s</p>
-    <div id="alert">⚠️ ALERT: Flood risk detected! ⚠️</div>
+
+  <div class="background-box-wrapper">
+    <div class="progress-bar"></div>
+    <div class="background-box">
+      <div class="sensor-box">
+        <h2>Sensor Readings</h2>
+        <div class="sensor-item">💧 Humidity: <span id="humi">--</span>%</div>
+        <div class="sensor-item">🌡️ Temperature: <span id="temp">--</span>°C</div>
+        <div class="sensor-item">🌊 Water Level: <span id="level">--</span></div>
+        <div class="sensor-item">📈 Flood Prediction: <span id="prediction">--</span></div>
+        <div class="sensor-item">🍃 Wind Speed: <span id="windspeed">--</span> m/s</div>
+        <div id="alert">⚠️ ALERT: Flood detected! ⚠️</div>
+      </div>
+    </div>
   </div>
 
-  <!-- Firebase v8 SDKs -->
+  <!-- Waves in background -->
+  <div class="waves-container">
+    <svg class="wave wave1" viewBox="0 0 1440 320"><path d="M0,224L48,218.7C96,213,192,203,288,181.3C384,160,480,128,576,122.7C672,117,768,139,864,160C960,181,1056,203,1152,186.7C1248,171,1344,117,1392,90.7L1440,64V320H0Z"></path></svg>
+    <svg class="wave wave2" viewBox="0 0 1440 320"><path d="M0,160L40,149.3C80,139,160,117,240,133.3C320,149,400,203,480,202.7C560,203,640,149,720,144C800,139,880,181,960,197.3C1040,213,1120,203,1200,176C1280,149,1360,107,1400,85.3L1440,64V320H0Z"></path></svg>
+    <svg class="wave wave3" viewBox="0 0 1440 320"><path d="M0,192L48,170.7C96,149,192,107,288,106.7C384,107,480,149,576,154.7C672,160,768,128,864,112C960,96,1056,96,1152,117.3C1248,139,1344,181,1392,202.7L1440,224V320H0Z"></path></svg>
+  </div>
+
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
-  <!-- Link to your external JavaScript file -->
   <script src="main.js"></script>
-  
+
 </body>
 </html>
-
